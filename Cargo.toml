@@ -1,0 +1,6 @@
+[package]
+name = "pinboard"
+version = "0.1.0"
+authors = ["David O'Rourke <david.orourke@gmail.com>"]
+
+[dependencies]
