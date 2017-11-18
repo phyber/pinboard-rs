@@ -43,5 +43,5 @@ fn config_file_path() -> String {
         None => PathBuf::from(""),
     };
 
-    String::from(home_dir.join(DOT_CONFIG).to_str().unwrap())
+    String::from(home_dir.join(DOT_CONFIG_FILE).to_str().unwrap())
 }
