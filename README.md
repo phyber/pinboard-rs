@@ -12,9 +12,19 @@ You may install this project directly from GitHub using the following command:
 
 `cargo install --git <repo url>`
 
-## Documentation
+## Configuration
 
-TODO
+The configuration is currently very simple. Configuration is read from a YAML
+file located at `~/.config/pinboard/config.yaml`. The file currently only
+contains the API token.
+
+Example:
+
+```yaml
+---
+api:
+    token: 'user:0123456789ABCDEF'
+```
 
 ## License
 
