@@ -7,8 +7,7 @@ extern crate serde_derive;
 
 mod settings;
 
-use std::io::{self, Write};
-use pinboard::{API, Tags};
+use pinboard::API;
 use settings::Settings;
 
 #[derive(Debug)]
@@ -33,7 +32,7 @@ fn main() {
     ::std::process::exit(match run_app() {
         Ok(_) => 0,
         Err(err) => {
-            writeln!(io::stderr(), "Error: {:?}", err).unwrap();
+            eprintln!("Error: {:?}", err);
             1
         }
     });
