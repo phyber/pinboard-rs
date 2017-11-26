@@ -6,7 +6,7 @@ use config::{Config, ConfigError, File, FileFormat};
 
 // Path to the config file in the .config directory.
 // This should be replaced with some XDG stuff in the future.
-const DOT_CONFIG_FILE: &'static str = ".config/pinboard/config.yaml";
+static DOT_CONFIG_FILE: &'static str = ".config/pinboard/config.yaml";
 
 #[derive(Debug, Deserialize)]
 pub struct API {
