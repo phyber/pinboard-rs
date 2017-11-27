@@ -8,14 +8,9 @@ mod error;
 
 use error::CliError;
 
-
 // These statics are used when forming the API request URL.
 static PINBOARD_API_URL: &'static str = "https://api.pinboard.in/v1/";
 static PINBOARD_RESPONSE_JSON: &'static str = "json";
-
-pub trait Tags {
-    fn tags_get(&self) -> Result<serde_json::Value, CliError>;
-}
 
 pub struct API {
     client: reqwest::Client,
@@ -44,7 +39,7 @@ impl API {
 
         // We unwrap here since we're just being passed URL fragments from
         // other functions. This should be safe.
-        let mut url = base.join(&fragment).unwrap();
+        let mut url = base.join(fragment).unwrap();
 
         // Set our query pairs.
         url.query_pairs_mut()
@@ -56,13 +51,11 @@ impl API {
     }
 
     fn get(&self, fragment: &str) -> Result<reqwest::Response, reqwest::Error> {
-        let url = self.url(&fragment);
+        let url = self.url(fragment);
         self.client.get(url).send()
     }
-}
 
-impl Tags for API {
-    fn tags_get(&self) -> Result<serde_json::Value, CliError> {
+    pub fn tags_get(&self) -> Result<serde_json::Value, CliError> {
         let mut resp = self.get("tags/get")?;
         // FIXME: Check it was actually a 200 before doing this.
         let body: serde_json::Value = resp.json()?;
