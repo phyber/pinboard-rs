@@ -50,15 +50,29 @@ impl API {
         url
     }
 
-    fn get(&self, fragment: &str) -> Result<reqwest::Response, reqwest::Error> {
+    fn get(&self, fragment: &str) -> Result<serde_json::Value, CliError> {
         let url = self.url(fragment);
-        self.client.get(url).send()
+        let mut resp = self.client.get(url).send()?;
+        let json = resp.json()?;
+        Ok(json)
     }
 
-    pub fn tags_get(&self) -> Result<serde_json::Value, CliError> {
-        let mut resp = self.get("tags/get")?;
-        // FIXME: Check it was actually a 200 before doing this.
-        let body: serde_json::Value = resp.json()?;
-        Ok(body)
+    // Return a list of notes.
+    pub fn notes(&self) -> Result<serde_json::Value, CliError> {
+        let resp = self.get("notes/list")?;
+        Ok(resp)
+    }
+
+    // Get a specific note
+    pub fn note(&self, id: &i32) -> Result<serde_json::Value, CliError> {
+        let fragment = format!("notes/{}", id);
+        let resp = self.get(&fragment)?;
+        Ok(resp)
+    }
+
+    // Return a list of tags
+    pub fn tags(&self) -> Result<serde_json::Value, CliError> {
+        let resp = self.get("tags/get")?;
+        Ok(resp)
     }
 }

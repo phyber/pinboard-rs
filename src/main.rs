@@ -23,8 +23,10 @@ fn run_app() -> Result<(), Error> {
 
     println!("{:?}", settings);
     let pinboard = API::new(&settings.api.token);
-    let things = pinboard.tags_get();
-    println!("{:?}", things);
+    let notes = pinboard.notes();
+    let tags = pinboard.tags();
+    println!("{:?}", notes);
+    println!("{:?}", tags);
     Ok(())
 }
 
