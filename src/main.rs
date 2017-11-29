@@ -25,8 +25,19 @@ fn run_app() -> Result<(), Error> {
     let pinboard = API::new(&settings.api.token);
     let notes = pinboard.notes();
     let tags = pinboard.tags();
-    println!("{:?}", notes);
-    println!("{:?}", tags);
+
+    println!("Notes: {:?}\n", notes);
+    println!("Tags: {:?}\n", tags);
+
+    print!("Notes: ");
+    match notes {
+        Ok(notes) => {
+            for note in notes.notes {
+                println!("{:?}", pinboard.note(note.id))
+            }
+        },
+        Err(e) => (),
+    }
     Ok(())
 }
 
