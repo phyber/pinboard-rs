@@ -6,6 +6,8 @@ extern crate serde_json;
 #[macro_use] extern crate serde_derive;
 
 mod error;
+mod tags;
+
 use error::CliError;
 
 // These statics are used when forming the API request URL.
@@ -96,11 +98,5 @@ impl API {
         let resp = self.get(&fragment)?;
         let note: Note = serde_json::from_value(resp)?;
         Ok(note)
-    }
-
-    // Return a list of tags
-    pub fn tags(&self) -> Result<serde_json::Value, CliError> {
-        let resp = self.get("tags/get")?;
-        Ok(resp)
     }
 }
