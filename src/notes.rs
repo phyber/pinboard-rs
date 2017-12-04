@@ -33,7 +33,6 @@ pub struct Note {
 
 impl API {
     // Return a list of notes.
-    //pub fn notes(&self) -> Result<serde_json::Value, CliError> {
     pub fn notes(&self) -> Result<Notes, CliError> {
         let resp = self.get("notes/list")?;
         let notes: Notes = serde_json::from_value(resp)?;
@@ -41,7 +40,7 @@ impl API {
     }
 
     // Get a specific note
-    pub fn note(&self, id: String) -> Result<Note, CliError> {
+    pub fn note(&self, id: &str) -> Result<Note, CliError> {
         let fragment = format!("notes/{}", id);
         let resp = self.get(&fragment)?;
         let note: Note = serde_json::from_value(resp)?;

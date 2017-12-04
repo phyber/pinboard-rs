@@ -33,7 +33,7 @@ fn run_app() -> Result<(), Error> {
     match notes {
         Ok(notes) => {
             for note in notes.notes {
-                println!("{:?}", pinboard.note(note.id))
+                println!("{:?}", pinboard.note(&note.id))
             }
         },
         Err(_e) => (),

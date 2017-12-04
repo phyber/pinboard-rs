@@ -20,7 +20,7 @@ impl API {
         // Loop over the tmp HashMap, transforming the counts into proper i64s.
         // This should be possible during deserialization, but the serde runes
         // for this are currently unknown.
-        for (name, count_str) in tmp.iter() {
+        for (name, count_str) in &tmp {
             let count = count_str.parse::<i64>()?;
             tags.insert(name.to_owned(), count);
         }
