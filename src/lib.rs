@@ -40,8 +40,8 @@ impl API {
     ///
     /// let api = API::new("username:abcdef1234567890");
     /// ```
-    pub fn new(token: &str) -> API {
-        API {
+    pub fn new(token: &str) -> Self {
+        Self {
             client: reqwest::Client::new(),
             token: token.to_owned(),
         }
