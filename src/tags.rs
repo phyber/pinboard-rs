@@ -2,7 +2,7 @@ extern crate serde_json;
 
 use error::CliError;
 use std::collections::HashMap;
-use super::API;
+use super::{API, GetArgs};
 
 type Tags = HashMap<String, i64>;
 
@@ -26,5 +26,14 @@ impl API {
         }
 
         Ok(tags)
+    }
+
+    pub fn tag_delete(&self, tag: &str) -> Result<(), CliError> {
+        let mut args = GetArgs::new();
+        args.insert("tag".to_string(), tag.to_string());
+
+        // FIXME: Use the resp here.
+        let _resp = self.get_with_args("tags/delete", args)?;
+        Ok(())
     }
 }

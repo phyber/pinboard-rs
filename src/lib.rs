@@ -11,6 +11,7 @@ mod tags;
 mod user;
 
 use error::CliError;
+use std::collections::HashMap;
 
 // These statics are used when forming the API request URL.
 static PINBOARD_API_URL: &'static str = "https://api.pinboard.in/v1/";
@@ -21,6 +22,9 @@ pub struct API {
     client: reqwest::Client,
     token: String,
 }
+
+/// Represents additional arguments to pass to GET.
+type GetArgs = HashMap<String, String>;
 
 /*
  * Implementation of the PinboardAPI.
@@ -95,6 +99,20 @@ impl API {
     /// ```
     fn get(&self, fragment: &str) -> Result<serde_json::Value, CliError> {
         let url = self.url(fragment);
+        let mut resp = self.client.get(url).send()?;
+        let json = resp.json()?;
+        Ok(json)
+    }
+
+    fn get_with_args(&self, fragment: &str, args: GetArgs) -> Result<serde_json::Value, CliError> {
+        let mut url = self.url(fragment);
+
+        // Loop over all arguments we got and build up the GET request.
+        for (param, value) in &args {
+            url.query_pairs_mut()
+                .append_pair(&param, &value);
+        }
+
         let mut resp = self.client.get(url).send()?;
         let json = resp.json()?;
         Ok(json)
