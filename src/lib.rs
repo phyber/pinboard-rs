@@ -8,6 +8,7 @@ extern crate serde_json;
 mod error;
 mod notes;
 mod tags;
+mod user;
 
 use error::CliError;
 
