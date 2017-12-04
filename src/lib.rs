@@ -7,6 +7,7 @@ extern crate serde_json;
 
 mod error;
 mod notes;
+mod posts;
 mod tags;
 mod user;
 
