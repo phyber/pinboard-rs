@@ -36,7 +36,7 @@ fn run_app() -> Result<(), Error> {
                 println!("{:?}", pinboard.note(note.id))
             }
         },
-        Err(e) => (),
+        Err(_e) => (),
     }
     Ok(())
 }
