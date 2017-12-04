@@ -3,11 +3,13 @@ extern crate serde_json;
 
 use std::error;
 use std::fmt;
+use std::num;
 
 #[derive(Debug)]
 pub enum CliError {
     Api(reqwest::Error),
     Json(serde_json::Error),
+    Parse(num::ParseIntError),
 }
 
 impl fmt::Display for CliError {
@@ -15,6 +17,7 @@ impl fmt::Display for CliError {
         match *self {
             CliError::Api(ref err) => write!(f, "API error: {}", err),
             CliError::Json(ref err) => write!(f, "JSON error: {}", err),
+            CliError::Parse(ref err) => write!(f, "Parse error: {}", err),
         }
     }
 }
@@ -24,6 +27,7 @@ impl error::Error for CliError {
         match *self {
             CliError::Api(ref err) => err.description(),
             CliError::Json(ref err) => error::Error::description(err),
+            CliError::Parse(ref err) => err.description(),
         }
     }
 
@@ -31,7 +35,14 @@ impl error::Error for CliError {
         match *self {
             CliError::Api(ref err) => Some(err),
             CliError::Json(ref err) => Some(err),
+            CliError::Parse(ref err) => Some(err),
         }
+    }
+}
+
+impl From<num::ParseIntError> for CliError {
+    fn from(err: num::ParseIntError) -> CliError {
+        CliError::Parse(err)
     }
 }
 
