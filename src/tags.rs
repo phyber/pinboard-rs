@@ -36,4 +36,14 @@ impl API {
         let _resp = self.get_with_args("tags/delete", args)?;
         Ok(())
     }
+
+    pub fn tag_rename(&self, old: &str, new: &str) -> Result<(), CliError> {
+        let mut args = GetArgs::new();
+        args.insert("old".to_string(), old.to_string());
+        args.insert("new".to_string(), new.to_string());
+
+        // FIXME: Use the resp here.
+        let _resp = self.get_with_args("tags/rename", args)?;
+        Ok(())
+    }
 }
