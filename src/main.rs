@@ -2,8 +2,8 @@ extern crate config;
 extern crate pinboard;
 extern crate serde;
 
-#[macro_use]
-extern crate serde_derive;
+#[macro_use] extern crate clap;
+#[macro_use] extern crate serde_derive;
 
 mod settings;
 
@@ -21,23 +21,49 @@ fn run_app() -> Result<(), Error> {
         Err(err) => return Err(Error::Config(err)),
     };
 
+    let matches = clap::App::new(crate_name!())
+        .about(crate_description!())
+        .version(crate_version!())
+        .author(crate_authors!("\n"))
+        .arg(clap::Arg::with_name("debug")
+             .short("d")
+             .long("debug")
+             .help("Enable debug output"))
+        .subcommand(clap::SubCommand::with_name("tags")
+                    .about("Tags related commands")
+                    .arg(clap::Arg::with_name("list")
+                         .short("l")
+                         .long("list")
+                         .help("List tags")))
+        .get_matches();
+
     println!("{:?}", settings);
     let pinboard = API::new(&settings.api.token);
-    let notes = pinboard.notes();
-    let tags = pinboard.tags();
 
-    println!("Notes: {:?}\n", notes);
-    println!("Tags: {:?}\n", tags);
-
-    print!("Notes: ");
-    match notes {
-        Ok(notes) => {
-            for note in notes.notes {
-                println!("{:?}", pinboard.note(&note.id))
-            }
-        },
-        Err(_e) => (),
+    if let Some(matches) = matches.subcommand_matches("tags") {
+        if matches.is_present("list") {
+            let tags = pinboard.tags();
+            println!("Tags: {:?}\n", tags);
+        }
     }
+
+    if let Some(matches) = matches.subcommand_matches("notes") {
+        if matches.is_present("list") {
+            let notes = pinboard.notes();
+
+            println!("Notes: {:?}\n", notes);
+            print!("Notes: ");
+            match notes {
+                Ok(notes) => {
+                    for note in notes.notes {
+                        println!("{:?}", pinboard.note(&note.id))
+                    }
+                },
+                Err(_e) => (),
+            }
+        }
+    }
+
     Ok(())
 }
 

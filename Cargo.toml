@@ -1,6 +1,7 @@
 [package]
 name = "pinboard"
 version = "0.1.0"
+description = "Pinboard CLI client"
 authors = ["David O'Rourke <david.orourke@gmail.com>"]
 
 [dependencies]
