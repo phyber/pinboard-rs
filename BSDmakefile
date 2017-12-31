@@ -17,4 +17,4 @@ release:
 	$(CARGO_BUILD_RELEASE)
 
 clean:
-	$(CARGO_CLEAN_OPTS)
+	$(CARGO_CLEAN)
