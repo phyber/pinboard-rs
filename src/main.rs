@@ -58,34 +58,38 @@ fn run_app() -> Result<(), Error> {
     println!("{:?}", settings);
     let pinboard = API::new(&settings.api.token);
 
-    if let Some(matches) = matches.subcommand_matches("tags") {
-        if matches.is_present("list") {
-            let tags = pinboard.tags();
-            println!("Tags: {:?}\n", tags);
-        }
-    }
+    // This will become unmanagable, we should split this into functions soon.
+    match matches.subcommand() {
+        ("notes", Some(m)) => {
+            if m.is_present("list") {
+                let notes = pinboard.notes();
 
-    if let Some(matches) = matches.subcommand_matches("notes") {
-        if matches.is_present("list") {
-            let notes = pinboard.notes();
-
-            println!("Notes: {:?}\n", notes);
-            print!("Notes: ");
-            match notes {
-                Ok(notes) => {
-                    for note in notes.notes {
-                        println!("{:?}", pinboard.note(&note.id))
-                    }
-                },
-                Err(_e) => (),
+                println!("Notes: {:?}\n", notes);
+                print!("Notes: ");
+                match notes {
+                    Ok(notes) => {
+                        for note in notes.notes {
+                            println!("{:?}", pinboard.note(&note.id))
+                        }
+                    },
+                    Err(_e) => (),
+                }
             }
-        }
-    }
-
-    if let Some(matches) = matches.subcommand_matches("post") {
-        if matches.is_present("add") {
-            
-        }
+        },
+        ("post", Some(m)) => {
+            if let Some(m) = m.subcommand_matches("add") {
+                // Required param
+                let url = m.value_of("url").unwrap();
+                println!("Got: {:?}", url);
+            }
+        },
+        ("tags", Some(m)) => {
+            if m.is_present("list") {
+                let tags = pinboard.tags();
+                println!("Tags: {:?}\n", tags);
+            }
+        },
+        _ => println!("Unrecognised subcommand"),
     }
 
     Ok(())
