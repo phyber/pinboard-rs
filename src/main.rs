@@ -61,6 +61,13 @@ fn run_app() -> Result<(), Error> {
              .short("d")
              .long("debug")
              .help("Enable debug output"))
+        .subcommand(clap::SubCommand::with_name("notes")
+                    .about("Notes related commands")
+                    .arg(clap::Arg::with_name("list")
+                         .short("l")
+                         .long("list")
+                         .help("List notes"))
+                    )
         .subcommand(clap::SubCommand::with_name("post")
                     .about("Post related commands")
                     .subcommand(clap::SubCommand::with_name("add")
@@ -84,7 +91,8 @@ fn run_app() -> Result<(), Error> {
                     .arg(clap::Arg::with_name("list")
                          .short("l")
                          .long("list")
-                         .help("List tags")))
+                         .help("List tags"))
+                    )
         .get_matches();
 
     println!("{:?}", settings);
