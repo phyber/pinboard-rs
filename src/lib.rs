@@ -7,10 +7,12 @@ extern crate serde_json;
 
 mod error;
 mod notes;
-mod postaddbuilder;
 mod posts;
 mod tags;
 mod user;
+
+// Use and re-export the PostAddBuilder
+pub mod postaddbuilder;
 
 use error::CliError;
 use std::collections::HashMap;
