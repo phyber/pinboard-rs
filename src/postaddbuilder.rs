@@ -3,22 +3,22 @@ extern crate serde_json;
 use error::CliError;
 use super::GetArgs;
 
-pub struct PostAddBuilder {
-    url: String,
-    description: String,
-    extended: Option<String>,
-    tags: Option<Vec<String>>,
-    dt: Option<String>,
-    replace: Option<String>,
-    shared: Option<String>,
-    toread: Option<String>,
+pub struct PostAddBuilder<'a> {
+    url: &'a str,
+    description: &'a str,
+    extended: Option<&'a str>,
+    tags: Option<Vec<&'a str>>,
+    dt: Option<&'a str>,
+    replace: Option<&'a str>,
+    shared: Option<&'a str>,
+    toread: Option<&'a str>,
 }
 
-impl PostAddBuilder {
-    pub fn new(url: &str, description: &str) -> Self {
+impl<'a> PostAddBuilder<'a> {
+    pub fn new(url: &'a str, description: &'a str) -> Self {
         Self {
-            url: url.to_owned(),
-            description: description.to_owned(),
+            url: url,
+            description: description,
             extended: None,
             tags: None,
             dt: None,
@@ -28,7 +28,7 @@ impl PostAddBuilder {
         }
     }
 
-    pub fn build(self) -> Result<GetArgs, CliError> {
+    pub fn build(&self) -> Result<GetArgs, CliError> {
         // Process above struct here.
         let mut args = GetArgs::new();
         args.insert("url".to_string(), self.url.to_owned());
@@ -41,7 +41,7 @@ impl PostAddBuilder {
 
         if self.tags != None {
             //let mut_tags = self.tags.unwrap();
-            let tags_str = self.tags.unwrap().join(","); //mut_tags.join(",");
+            let tags_str = self.tags.clone().unwrap().join(","); //mut_tags.join(",");
             args.insert("tags".to_string(), tags_str.to_owned());
         }
 
@@ -64,45 +64,45 @@ impl PostAddBuilder {
         Ok(args)
     }
 
-    pub fn dt<'a>(&'a mut self, dt: &str) -> &'a mut Self {
-        self.dt = Some(dt.to_owned());
+    pub fn dt(&mut self, dt: &'a str) -> &mut Self {
+        self.dt = Some(dt);
         self
     }
 
-    pub fn extended<'a>(&'a mut self, extended: &str) -> &'a mut Self {
-        self.extended = Some(extended.to_owned());
+    pub fn extended(&mut self, extended: &'a str) -> &mut Self {
+        self.extended = Some(extended);
         self
     }
 
-    pub fn replace<'a>(&'a mut self, replace: bool) -> &'a mut Self {
+    pub fn replace(&mut self, replace: bool) -> &mut Self {
         let toggle = match replace {
-            false => "no".to_owned(),
-            true => "yes".to_owned(),
+            false => "no",
+            true => "yes",
         };
 
         self.replace = Some(toggle);
         self
     }
 
-    pub fn shared<'a>(&'a mut self, shared: bool) -> &'a mut Self {
+    pub fn shared(&mut self, shared: bool) -> &mut Self {
         let toggle = match shared {
-            false => "no".to_owned(),
-            true => "yes".to_owned(),
+            false => "no",
+            true => "yes",
         };
 
         self.shared = Some(toggle);
         self
     }
 
-    pub fn tags<'a>(&'a mut self, tags: Vec<String>) -> &'a mut Self {
-        self.tags = Some(tags.to_owned());
+    pub fn tags(&mut self, tags: Vec<&'a str>) -> &mut Self {
+        self.tags = Some(tags);
         self
     }
 
-    pub fn toread<'a>(&'a mut self, toread: bool) -> &'a mut Self {
+    pub fn toread(&mut self, toread: bool) -> &mut Self {
         let toggle = match toread {
-            false => "no".to_owned(),
-            true => "yes".to_owned(),
+            false => "no",
+            true => "yes",
         };
 
         self.toread = Some(toggle);
