@@ -199,4 +199,18 @@ mod tests {
 
         assert_eq!(pb.toread, Some("yes"));
     }
+
+    #[test]
+    fn build() {
+        let mut pb = setup();
+
+        let res = pb.extended("a description")
+            .dt("a time")
+            .replace(false)
+            .shared(false)
+            .toread(true)
+            .build();
+
+        assert!(res.is_ok(), "Post Add Build failed");
+    }
 }
