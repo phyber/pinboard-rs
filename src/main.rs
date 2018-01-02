@@ -15,6 +15,38 @@ enum Error {
     Config(config::ConfigError),
 }
 
+fn notes(p: &pinboard::API, m: &clap::ArgMatches) {
+    if m.is_present("list") {
+        let notes = p.notes();
+
+        println!("Notes: {:?}\n", notes);
+        print!("Notes: ");
+        match notes {
+            Ok(notes) => {
+                for note in notes.notes {
+                    println!("{:?}", p.note(&note.id))
+                }
+            },
+            Err(_e) => (),
+        }
+    }
+}
+
+fn post(p: &pinboard::API, m: &clap::ArgMatches) {
+    if let Some(m) = m.subcommand_matches("add") {
+        // Required param
+        let url = m.value_of("url").unwrap();
+        println!("Got: {:?}", url);
+    }
+}
+
+fn tags(p: &pinboard::API, m: &clap::ArgMatches) {
+    if m.is_present("list") {
+        let tags = p.tags();
+        println!("Tags: {:?}\n", tags);
+    }
+}
+
 fn run_app() -> Result<(), Error> {
     let settings = match Settings::new() {
         Ok(ok) => ok,
@@ -60,35 +92,9 @@ fn run_app() -> Result<(), Error> {
 
     // This will become unmanagable, we should split this into functions soon.
     match matches.subcommand() {
-        ("notes", Some(m)) => {
-            if m.is_present("list") {
-                let notes = pinboard.notes();
-
-                println!("Notes: {:?}\n", notes);
-                print!("Notes: ");
-                match notes {
-                    Ok(notes) => {
-                        for note in notes.notes {
-                            println!("{:?}", pinboard.note(&note.id))
-                        }
-                    },
-                    Err(_e) => (),
-                }
-            }
-        },
-        ("post", Some(m)) => {
-            if let Some(m) = m.subcommand_matches("add") {
-                // Required param
-                let url = m.value_of("url").unwrap();
-                println!("Got: {:?}", url);
-            }
-        },
-        ("tags", Some(m)) => {
-            if m.is_present("list") {
-                let tags = pinboard.tags();
-                println!("Tags: {:?}\n", tags);
-            }
-        },
+        ("notes", Some(m)) => notes(&pinboard, &m),
+        ("post", Some(m)) => post(&pinboard, &m),
+        ("tags", Some(m)) => tags(&pinboard, &m),
         _ => println!("Unrecognised subcommand"),
     }
 
