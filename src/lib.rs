@@ -65,10 +65,10 @@ impl API {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```ignore
     /// // In this case, `url` would be set to something along the lines of:
     /// // https://api.pinboard.in/v1/tags/get?auth_token=<token>&format=json
-    /// let url = self.get("tags/get")?;
+    /// let url = self.url("tags/get");
     /// ```
     fn url(&self, fragment: &str) -> reqwest::Url {
         // We unwrap here because we're using the URL defined above. It should
@@ -98,7 +98,7 @@ impl API {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```ignore
     /// let json = self.get("tags/get")?;
     /// ```
     fn get(&self, fragment: &str) -> Result<serde_json::Value, CliError> {
