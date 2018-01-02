@@ -29,6 +29,24 @@ fn run_app() -> Result<(), Error> {
              .short("d")
              .long("debug")
              .help("Enable debug output"))
+        .subcommand(clap::SubCommand::with_name("post")
+                    .about("Post related commands")
+                    .subcommand(clap::SubCommand::with_name("add")
+                                .about("Add a URL to Pinboard")
+                                .arg(clap::Arg::with_name("url")
+                                     .short("u")
+                                     .long("url")
+                                     .required(true)
+                                     .takes_value(true)
+                                     .help("URL to add"))
+                                .arg(clap::Arg::with_name("description")
+                                     .short("d")
+                                     .long("description")
+                                     .required(true)
+                                     .takes_value(true)
+                                     .help("Description of URL"))
+                                )
+                    )
         .subcommand(clap::SubCommand::with_name("tags")
                     .about("Tags related commands")
                     .arg(clap::Arg::with_name("list")
@@ -61,6 +79,12 @@ fn run_app() -> Result<(), Error> {
                 },
                 Err(_e) => (),
             }
+        }
+    }
+
+    if let Some(matches) = matches.subcommand_matches("post") {
+        if matches.is_present("add") {
+            
         }
     }
 
