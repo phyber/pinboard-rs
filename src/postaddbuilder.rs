@@ -212,5 +212,15 @@ mod tests {
             .build();
 
         assert!(res.is_ok(), "Post Add Build failed");
+
+        let args = res.unwrap();
+
+        assert_eq!(args.get("url"), Some(&String::from("http://example.org")));
+        assert_eq!(args.get("description"), Some(&String::from("Just an example")));
+        assert_eq!(args.get("extended"), Some(&String::from("a description")));
+        assert_eq!(args.get("dt"), Some(&String::from("a time")));
+        assert_eq!(args.get("replace"), Some(&String::from("no")));
+        assert_eq!(args.get("shared"), Some(&String::from("no")));
+        assert_eq!(args.get("toread"), Some(&String::from("yes")));
     }
 }
