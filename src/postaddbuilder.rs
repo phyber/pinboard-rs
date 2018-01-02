@@ -109,3 +109,94 @@ impl<'a> PostAddBuilder<'a> {
         self
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Helper function since we want the same PostAddBuilder for each test.
+    fn setup() -> PostAddBuilder<'static> {
+        PostAddBuilder::new(
+            "http://example.org",
+            "Just an example"
+            )
+    }
+
+    #[test]
+    fn url() {
+        let pb = setup();
+
+        assert_eq!(pb.url, "http://example.org");
+    }
+
+    #[test]
+    fn description() {
+        let pb = setup();
+
+        assert_eq!(pb.description, "Just an example");
+    }
+
+    #[test]
+    fn dt() {
+        let mut pb = setup();
+        pb.dt("test string");
+
+        assert_eq!(pb.dt, Some("test string"));
+    }
+
+    #[test]
+    fn extended() {
+        let mut pb = setup();
+        pb.extended("Some kind of description");
+
+        assert_eq!(pb.extended, Some("Some kind of description"));
+    }
+
+    #[test]
+    fn replace_false() {
+        let mut pb = setup();
+        pb.replace(false);
+
+        assert_eq!(pb.replace, Some("no"));
+    }
+
+    #[test]
+    fn replace_true() {
+        let mut pb = setup();
+        pb.replace(true);
+
+        assert_eq!(pb.replace, Some("yes"));
+    }
+
+    #[test]
+    fn shared_false() {
+        let mut pb = setup();
+        pb.shared(false);
+
+        assert_eq!(pb.shared, Some("no"));
+    }
+
+    #[test]
+    fn shared_true() {
+        let mut pb = setup();
+        pb.shared(true);
+
+        assert_eq!(pb.shared, Some("yes"));
+    }
+
+    #[test]
+    fn toread_false() {
+        let mut pb = setup();
+        pb.toread(false);
+
+        assert_eq!(pb.toread, Some("no"));
+    }
+
+    #[test]
+    fn toread_true() {
+        let mut pb = setup();
+        pb.toread(true);
+
+        assert_eq!(pb.toread, Some("yes"));
+    }
+}
