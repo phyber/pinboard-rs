@@ -1,6 +1,8 @@
 /*
  * A library for working with the Pinboard API.
  */
+#[cfg(test)] extern crate mockito;
+#[cfg(test)] extern crate url;
 extern crate reqwest;
 extern crate serde_json;
 #[macro_use] extern crate serde_derive;
@@ -17,7 +19,10 @@ pub mod postaddbuilder;
 use error::CliError;
 use std::collections::HashMap;
 
-// These statics are used when forming the API request URL.
+#[cfg(test)]
+static PINBOARD_API_URL: &'static str = mockito::SERVER_URL;
+
+#[cfg(not(test))]
 static PINBOARD_API_URL: &'static str = "https://api.pinboard.in/v1/";
 static PINBOARD_RESPONSE_JSON: &'static str = "json";
 
