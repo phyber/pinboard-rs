@@ -8,6 +8,9 @@ become useful at some point.
 
 A few notes if anyone happens to read the code:
 
+  - I'm using the JSON version of the API, some of the returned data is
+    slightly different compared to what is shown on the Pinboard API docs. I'll
+    comment on structs where this is the case.
   - I'm purposefully not using a crate like [`error-chain`](
     https://github.com/rust-lang-nursery/error-chain) or [`failure`](
     https://boats.gitlab.io/failure/) right now as I want to fully understand

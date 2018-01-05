@@ -22,6 +22,8 @@ pub struct Notes {
     pub notes: Vec<NotesNote>,
 }
 
+// Pinboard API docs don't mention created_at and updated_at being returned
+// here as they aren't present in the XML reply.
 #[derive(Debug, Deserialize)]
 pub struct Note {
     pub id: String,
