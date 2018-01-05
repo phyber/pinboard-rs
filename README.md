@@ -18,7 +18,7 @@ A few notes if anyone happens to read the code:
     errors will be restructured to use a library. Most likely `failure`.
   - Until I'm happy with the names I've given most things, I'm avoiding some
     concise name importing via `use`, so there are a few more lengthy function
-    calls or type names than there might be in regular Rust code.
+    calls or type names than there might be in idiomatic Rust code.
 
 ## Installation
 
