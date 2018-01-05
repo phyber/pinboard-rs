@@ -15,6 +15,7 @@ mod user;
 
 // Use and re-export the PostAddBuilder
 pub mod postaddbuilder;
+#[cfg(test)] mod test_common;
 
 use error::CliError;
 use std::collections::HashMap;
