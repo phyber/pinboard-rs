@@ -31,13 +31,15 @@ impl API {
 mod tests {
     use test_common;
 
-    static USER_API_TOKEN_JSON: &'static str = "{\"result\":\"XOG86E7JIYMI\"}";
-    static USER_SECRET_JSON: &'static str = "{\"result\":\"6493a84f72d86e7de130\"}";
 
     #[test]
     fn user_api_token() {
+        let json = json!({
+            "result": "XOG86E7JIYMI",
+        }).to_string();
+
         let api = test_common::setup_api();
-        let mock = test_common::setup_mock("user/api_token", USER_API_TOKEN_JSON);
+        let mock = test_common::setup_mock("user/api_token", &json);
         let ret = api.user_api_token();
         mock.assert();
         let user_api_token = ret.unwrap();
@@ -47,8 +49,12 @@ mod tests {
 
     #[test]
     fn user_secret() {
+        let json = json!({
+            "result": "6493a84f72d86e7de130",
+        }).to_string();
+
         let api = test_common::setup_api();
-        let mock = test_common::setup_mock("user/secret", USER_SECRET_JSON);
+        let mock = test_common::setup_mock("user/secret", &json);
         let ret = api.user_secret();
         mock.assert();
         let user_secret = ret.unwrap();
