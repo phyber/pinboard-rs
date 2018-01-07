@@ -56,13 +56,24 @@ impl API {
 mod tests {
     use test_common;
 
-    static NOTE_ID_JSON: &'static str = "{\"id\":\"8e5d6964bb810e0050b0\",\"title\":\"StarCraft beta coming this week!\",\"created_at\":\"2010-02-11 03:46:56\",\"updated_at\":\"2010-02-11 03:47:47\",\"length\":153,\"text\":\"<![CDATA[It was clear that readers showing up for our live blog of the Activision Blizzard earnings call were interested in one thing: when the closed beta for StarCraft 2 was set to begin. It took a while to get there, but we were provided a solid answer. The beta will begin before the end of the month, with the game itself set for release in the middle of 2010.]]>\",\"hash\":\"0c9c30f60cadabd31415\"}";
-    static NOTES_LIST_JSON: &'static str = "{\"count\":1,\"notes\":[{\"id\":\"8e5d6964bb810e0050b0\",\"hash\":\"0c9c30f60cadabd31415\",\"title\":\"StarCraft beta coming this week!\",\"length\":\"153\",\"created_at\":\"2010-02-11 03:46:56\",\"updated_at\":\"2010-02-11 03:47:47\"}]}";
-
     #[test]
     fn notes() {
+        let json = json!({
+            "count":1,
+            "notes": [
+                {
+                    "id": "8e5d6964bb810e0050b0",
+                    "hash": "0c9c30f60cadabd31415",
+                    "title": "StarCraft beta coming this week!",
+                    "length": "153",
+                    "created_at": "2010-02-11 03:46:56",
+                    "updated_at": "2010-02-11 03:47:47",
+                },
+            ],
+        }).to_string();
+
         let api = test_common::setup_api();
-        let mock = test_common::setup_mock("notes/list", NOTES_LIST_JSON);
+        let mock = test_common::setup_mock("notes/list", &json);
 
         // Notes List call
         let ret = api.notes();
@@ -81,8 +92,18 @@ mod tests {
 
     #[test]
     fn note() {
+        let json = json!({
+            "id": "8e5d6964bb810e0050b0",
+            "title": "StarCraft beta coming this week!",
+            "created_at": "2010-02-11 03:46:56",
+            "updated_at": "2010-02-11 03:47:47",
+            "length": 153,
+            "text": "<![CDATA[It was clear that readers showing up for our live blog of the Activision Blizzard earnings call were interested in one thing: when the closed beta for StarCraft 2 was set to begin. It took a while to get there, but we were provided a solid answer. The beta will begin before the end of the month, with the game itself set for release in the middle of 2010.]]>",
+            "hash": "0c9c30f60cadabd31415",
+        }).to_string();
+
         let api = test_common::setup_api();
-        let mock = test_common::setup_mock("notes/8e5d6964bb810e0050b0", NOTE_ID_JSON);
+        let mock = test_common::setup_mock("notes/8e5d6964bb810e0050b0", &json);
 
         let ret = api.note("8e5d6964bb810e0050b0");
         mock.assert();

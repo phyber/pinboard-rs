@@ -4,7 +4,8 @@
 #[cfg(test)] extern crate mockito;
 #[cfg(test)] extern crate url;
 extern crate reqwest;
-extern crate serde_json;
+#[cfg(test)] #[macro_use] extern crate serde_json;
+#[cfg(not(test))] extern crate serde_json;
 #[macro_use] extern crate serde_derive;
 
 mod error;
