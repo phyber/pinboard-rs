@@ -15,6 +15,8 @@ enum Error {
     Config(config::ConfigError),
 }
 
+static DEFAULT_CONFIG_FILE: &'static str = "~/.config/pinboard/config.yaml";
+
 fn notes(p: &pinboard::API, m: &clap::ArgMatches) {
     if m.is_present("list") {
         let notes = p.notes();
@@ -48,15 +50,17 @@ fn tags(p: &pinboard::API, m: &clap::ArgMatches) {
 }
 
 fn run_app() -> Result<(), Error> {
-    let settings = match Settings::new() {
-        Ok(ok) => ok,
-        Err(err) => return Err(Error::Config(err)),
-    };
-
     let matches = clap::App::new(crate_name!())
         .about(crate_description!())
         .version(crate_version!())
         .author(crate_authors!("\n"))
+        .arg(clap::Arg::with_name("config")
+             .short("c")
+             .long("config")
+             .takes_value(true)
+             .env("PINBOARD_CONFIG_FILE")
+             .default_value(DEFAULT_CONFIG_FILE)
+             .help("Specify a custom config file to load"))
         .arg(clap::Arg::with_name("debug")
              .short("d")
              .long("debug")
@@ -95,7 +99,13 @@ fn run_app() -> Result<(), Error> {
                     )
         .get_matches();
 
-    println!("{:?}", settings);
+    // We supply a default for this value, so it should be safe to unwrap.
+    let config_file = matches.value_of("config").unwrap();
+    let settings = match Settings::new(&config_file) {
+        Ok(ok) => ok,
+        Err(err) => return Err(Error::Config(err)),
+    };
+
     let pinboard = API::new(&settings.api.token);
 
     // This will become unmanagable, we should split this into functions soon.
