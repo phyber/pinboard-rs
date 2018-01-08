@@ -23,16 +23,18 @@ pub struct Notes {
 }
 
 // Pinboard API docs don't mention created_at and updated_at being returned
-// here as they aren't present in the XML reply.
+// here as they aren't present in the XML reply. Due to that, we deserialize
+// them but don't make them public. They may disappear from the struct in the
+// future.
 #[derive(Debug, Deserialize)]
 pub struct Note {
     pub id: String,
     pub title: String,
     pub length: i64,
     pub hash: String,
-    pub created_at: String,
-    pub updated_at: String,
     pub text: String,
+    created_at: String,
+    updated_at: String,
 }
 
 impl API {
