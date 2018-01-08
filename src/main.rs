@@ -101,7 +101,7 @@ fn run_app() -> Result<(), Error> {
 
     // We supply a default for this value, so it should be safe to unwrap.
     let config_file = matches.value_of("config").unwrap();
-    let settings = match Settings::new(&config_file) {
+    let settings = match Settings::new(config_file) {
         Ok(ok) => ok,
         Err(err) => return Err(Error::Config(err)),
     };
@@ -110,9 +110,9 @@ fn run_app() -> Result<(), Error> {
 
     // This will become unmanagable, we should split this into functions soon.
     match matches.subcommand() {
-        ("notes", Some(m)) => notes(&pinboard, &m),
-        ("post", Some(m)) => post(&pinboard, &m),
-        ("tags", Some(m)) => tags(&pinboard, &m),
+        ("notes", Some(m)) => notes(&pinboard, m),
+        ("post", Some(m)) => post(&pinboard, m),
+        ("tags", Some(m)) => tags(&pinboard, m),
         _ => println!("Unrecognised subcommand"),
     }
 
