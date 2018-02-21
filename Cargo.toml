@@ -6,7 +6,7 @@ authors = ["David O'Rourke <david.orourke@gmail.com>"]
 
 [dependencies]
 clap = "2.29"
-config = "0.7"
+config = "0.8"
 reqwest = "0.8"
 serde = "1.0"
 serde_derive = "1.0"
